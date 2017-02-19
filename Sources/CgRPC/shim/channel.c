@@ -99,13 +99,9 @@ cgrpc_channel *cgrpc_channel_create_securev2(const char *address,
   arg->value.string = gpr_strdup("grpc-swift/0.0.1");
     
   channelArgs->num_args = argCount;
-  grpc_ssl_pem_key_cert_pair *pair = NULL;
-  if(pem_private_key != NULL || pem_cert_chain != NULL) {
-    pair = gpr_malloc(sizeof(grpc_ssl_pem_key_cert_pair));
-    pair->cert_chain = gpr_strdup(pem_cert_chain);
-    pair->private_key = gpr_strdup(pem_private_key);
-  }
-    
+  grpc_ssl_pem_key_cert_pair *pair = gpr_malloc(sizeof(grpc_ssl_pem_key_cert_pair));
+  pair->cert_chain = gpr_strdup(pem_cert_chain);
+  pair->private_key = gpr_strdup(pem_private_key);
   const char* root_certs = gpr_strdup(pem_root_certs);
   grpc_channel_credentials *creds = grpc_ssl_credentials_create(root_certs, pair, NULL);
   c->channel = grpc_secure_channel_create(creds, address, channelArgs, NULL);
