@@ -97,6 +97,13 @@ public class {{ .|serviceclass:protoFile,service }} {
     channel = Channel(address:address, certificates:certificates, host:host)
     metadata = Metadata()
   }
+    
+   /// Create a client that makes secure connection using private key and cert chain
+  public init(address: String, certificates: String?, privateKey: String?, certChain: String?) {
+    gRPC.initialize()
+    channel = Channel(address:address, certificates:certificates, privateKey:privateKey, certChain:certChain)
+    metadata = Metadata()
+  }
 
   //-{% for method in service.method %}
   //-{% if not method.clientStreaming and not method.serverStreaming %}
